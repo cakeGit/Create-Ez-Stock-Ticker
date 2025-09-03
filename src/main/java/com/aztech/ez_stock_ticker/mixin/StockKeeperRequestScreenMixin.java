@@ -152,7 +152,7 @@ public abstract class StockKeeperRequestScreenMixin extends AbstractSimiContaine
 
     /**
      * @author cake
-     * @reason Patching too many lines, so just overwrite, again
+     * @reason Patching too many lines, so just overwrite :p
      **/
     @Overwrite
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {

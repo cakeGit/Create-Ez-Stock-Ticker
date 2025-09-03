@@ -14,6 +14,7 @@ public class CreateEasyStockTicker {
 
     public CreateEasyStockTicker(IEventBus eventBus, ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.CONFIG_SPEC);
+        eventBus.addListener(CreateEasyStockTickerClient::onClientSetup);
     }
 
     public static ResourceLocation asResource(String s) {

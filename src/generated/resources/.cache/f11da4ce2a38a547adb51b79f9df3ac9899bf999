@@ -1,8 +1,0 @@
-// 1.20.1	2025-06-20T19:02:39.7422613	Registrate Provider for drill_drain [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
-0520d2427105c5f547280b9a23e35e48a141d584 assets/drill_drain/blockstates/drill_drain.json
-a133edb354ef0be670434cac1399e6d341855cc2 assets/drill_drain/lang/en_ud.json
-9a2b2afddbdfd2b0338098ffef9e1e7d8010ea5f assets/drill_drain/lang/en_us.json
-30de4634b75adf90453f98f1688b48d6fe3ae41d assets/drill_drain/models/item/drill_drain.json
-3910219e90721027f78845ea5d328ebb728ef7d0 data/drill_drain/loot_tables/blocks/drill_drain.json
-8ca95a5aae4b89d447f612830cb5f5cc721d01b9 data/minecraft/tags/blocks/mineable/axe.json
-8ca95a5aae4b89d447f612830cb5f5cc721d01b9 data/minecraft/tags/blocks/mineable/pickaxe.json
