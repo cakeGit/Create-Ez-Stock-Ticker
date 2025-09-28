@@ -1,2 +1,10 @@
 {
+  "ez_stock_ticker.gui.enabled": "Режим улучшенного взаимодействия с интерфейсом складского тикера включён",
+  "ez_stock_ticker.gui.enabled_description_1": "Поле поиска предметов открывается автоматически, доступны новые модификаторы мыши:",
+  "ez_stock_ticker.gui.enabled_description_2": "попробуйте прокрутку с зажатыми Shift или Ctrl, а также клик ПКМ по набранному стаку",
+  "ez_stock_ticker.gui.disabled": "Режим улучшенного взаимодействия с интерфейсом складского тикера выключен",
+  "ez_stock_ticker.gui.disabled_description_1": "Модификаторы мыши отключены,",
+  "ez_stock_ticker.gui.disabled_description_2": "но поле поиска предметов всё так же открывается автоматически",
+  "ez_stock_ticker.gui.click_to_toggle": "Кликните для переключения"
 }
+
