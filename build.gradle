@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.89'
     id 'idea'
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -200,4 +201,59 @@ idea {
         downloadSources = true
         downloadJavadoc = true
     }
+}
+
+publishMods {
+    def TOKENS = new HashMap<String, String>();
+    def envFile = file("$projectDir/.env");
+
+    if (envFile.exists())
+        envFile.readLines().each() {
+            def (key, value) = it.tokenize('=')
+            TOKENS.put(key, value)
+        }
+
+    file = jar.archiveFile
+
+    //Read changelog.yml
+    def changelogYaml = new org.yaml.snakeyaml.Yaml().loadAs(file("changelog.yml").newReader(), Map.class)
+    def changelogEntry = minecraft_version + "-" + mod_version;
+
+    def changelogText = changelogYaml.getOrDefault(changelogEntry, "")
+
+    if (changelogText == "") {
+        println("Warning: No changelog entry found for " + changelogEntry)
+    } else {
+        println("Changelog entry found for " + changelogEntry + ": " + changelogText)
+    }
+
+    changelog = changelogText
+    type = STABLE
+    modLoaders.add("neoforge")
+
+    def name = "Create: Easy Stock Ticker $mod_version NeoForge $minecraft_version";
+
+    curseforge {
+        projectId = "1340326"
+        projectSlug = "create-easy-stock-ticker" // Required for discord webhook
+        accessToken = TOKENS.get("CURSEFORGE_PUBLISH_TOKEN")
+        minecraftVersions.add(minecraft_version)
+        displayName = name
+
+        javaVersions.add(JavaVersion.VERSION_21)
+        clientRequired = true
+        serverRequired = true
+        requires("create")
+    }
+    modrinth {
+        projectId = "qYDytzUC"
+        accessToken = TOKENS.get("MODRINTH_PUBLISH_TOKEN")
+        minecraftVersions.add(minecraft_version)
+        displayName = name
+        modLoaders.add("neoforge")
+        requires("create")
+    }
+
+    def forgeEmoji = "<:neoforge:1267784950271443004>";
+    println("\n# Create: Easy Stock Ticker has been updated to $mod_version for $minecraft_version ($forgeEmoji)\n " + changelogText)
 }
