@@ -4,7 +4,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class ClientConfig {
-    //Define a field to keep the config and spec for later
+
     public static final ClientConfig CONFIG;
     public static final ModConfigSpec CONFIG_SPEC;
 
@@ -18,13 +18,31 @@ public class ClientConfig {
         CONFIG_SPEC = pair.getRight();
     }
 
-    //Store the config properties as public finals
-    public final ModConfigSpec.ConfigValue<Boolean> isEzStockTickerEnabled;
+    public final ModConfigSpec.ConfigValue<Boolean> autoFocusSearch;
+    public final ModConfigSpec.ConfigValue<Boolean> scrollSnapping;
+    public final ModConfigSpec.ConfigValue<Boolean> rightClickDivide;
+    public final ModConfigSpec.ConfigValue<Boolean> preventStackDeletion;
 
     private ClientConfig(ModConfigSpec.Builder builder) {
-        //Define each property
-        //One property could be a message to log to the console when the game is initialised
-        isEzStockTickerEnabled = builder.define("ez_stock_ticker_enabled", true);
+        autoFocusSearch = builder
+                .translation("ez_stock_ticker.config.auto_focus_search")
+                .comment("Automatically focuses the search bar when opening a stock keeper")
+                .define("auto_focus_search_enabled", true);
+
+        scrollSnapping = builder
+                .translation("ez_stock_ticker.config.scroll_snapping")
+                .comment("Shift scrolls in 16-item increments")
+                .define("scroll_snapping_enabled", true);
+
+        rightClickDivide = builder
+                .translation("ez_stock_ticker.config.right_click_divide")
+                .comment("Right clicking an item in the order bar divides the requested amount by 2")
+                .define("right_click_divide_enabled", true);
+
+        preventStackDeletion = builder
+                .translation("ez_stock_ticker.config.prevent_stack_deletion")
+                .comment("Prevents scrolling from removing an item from the order bar entirely")
+                .define("prevent_stack_deletion_enabled", true);
     }
 
 }
