@@ -1,8 +1,8 @@
-
 package com.aztech.ez_stock_ticker.mixin;
 
 import com.aztech.ez_stock_ticker.ClientConfig;
 import com.aztech.ez_stock_ticker.CreateEasyStockTicker;
+import com.aztech.ez_stock_ticker.foundation.StackSnapping;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import com.simibubi.create.content.logistics.BigItemStack;
@@ -22,7 +22,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import org.lwjgl.glfw.GLFW;
 import org.objectweb.asm.Opcodes;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -36,13 +39,16 @@ public abstract class StockKeeperRequestScreenMixin extends AbstractSimiContaine
     @Unique
     private static final ResourceLocation STOCK_KEEPER_PATCH = CreateEasyStockTicker.asResource("textures/gui/stock_keeper_patch.png");
 
-    @Shadow @Final
+    @Shadow
+    @Final
     private static AllGuiTextures HEADER;
 
-    @Shadow @Final
+    @Shadow
+    @Final
     private static AllGuiTextures BODY;
 
-    @Shadow @Final
+    @Shadow
+    @Final
     private static AllGuiTextures FOOTER;
 
     @Shadow
@@ -57,7 +63,7 @@ public abstract class StockKeeperRequestScreenMixin extends AbstractSimiContaine
 
     @Inject(method = "init", at = @At("TAIL"))
     private void init_tail(CallbackInfo ci) {
-        if (ClientConfig.CONFIG.autoFocusSearch.get()) {
+        if (ClientConfig.CONFIG.autoFocusSearch.get() && ClientConfig.CONFIG.enabled.get()) {
             searchBox.setFocused(true);
         }
     }
@@ -81,56 +87,60 @@ public abstract class StockKeeperRequestScreenMixin extends AbstractSimiContaine
                                             @Local(name = "transfer") LocalIntRef transfer,
                                             @Local(name = "rmb") boolean rmb,
                                             @Local(name = "entry") BigItemStack entry) {
-        if (rmb && ClientConfig.CONFIG.rightClickDivide.get()) {
+        if (rmb && ClientConfig.CONFIG.enabled.get() && ClientConfig.CONFIG.rightClickDivide.get()) {
             existingOrder.count = current / 2;
         }
     }
 
     @Inject(
-        method = "mouseScrolled",
-        at = @At(
-            value = "FIELD",
-            target = "Lcom/simibubi/create/content/logistics/BigItemStack;count:I",
-            ordinal = 1, // This is the `existingOrder.count = current - transfer;` line
-            shift = At.Shift.BY,
-            by = -2
-        )
+            method = "mouseScrolled",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lcom/simibubi/create/content/logistics/BigItemStack;count:I",
+                    ordinal = 1, // This is the `existingOrder.count = current - transfer;` line
+                    shift = At.Shift.BY,
+                    by = -2
+            )
     )
     private void mouseScrolled_removeItems(double mouseX,
                                            double mouseY,
                                            double scrollX,
                                            double scrollY,
                                            CallbackInfoReturnable<Boolean> cir,
-                                           @Local(name = "existingOrder") BigItemStack existingOrder,
                                            @Local(name = "current") int current,
                                            @Local(name = "transfer") LocalIntRef transfer,
-                                           @Local(name = "entry") BigItemStack entry) {
-        int stackSnapping = entry.stack.getMaxStackSize() / 4;
+                                           @Local(name = "entry") BigItemStack entry,
+                                           @Local(name = "recipeClicked") boolean recipeClicked,
+                                           @Local(name = "orderClicked") boolean orderClicked) {
+        boolean preventingStackDeletion = ClientConfig.CONFIG.preventStackDeletion.get() && (orderClicked || recipeClicked);
 
-        if (ClientConfig.CONFIG.scrollSnapping.get() && hasShiftDown()) {
-            if (stackSnapping == 0) return; //Snap size 0 means it's a factory logistics fluid
-            int target = (Math.floorDiv(current, stackSnapping) - 1) * stackSnapping;
-            if (ClientConfig.CONFIG.preventStackDeletion.get()) {
+        if (ClientConfig.CONFIG.enabled.get() && ClientConfig.CONFIG.scrollSnapping.get()) {
+            int stackSnapping = StackSnapping.getSnappingIncrementSafe(entry.stack.getMaxStackSize());
+
+            int target = (Math.ceilDiv(current, stackSnapping) - 1) * stackSnapping;
+            if (preventingStackDeletion) {
                 target = Math.max(1, target);
             }
             transfer.set(current - Math.max(0, target)); // Set the amount to transfer
-        } else if (ClientConfig.CONFIG.preventStackDeletion.get()) {
-            // Prevent scrolling to 0
-            int target = current - transfer.get();
-            if (target < 1) {
-                transfer.set(current - 1); // Only transfer enough to reach 1
+        } else {
+            if (preventingStackDeletion) {
+                // Prevent scrolling to 0, ONLY IF orderClicked or RECIPE CLICKED
+                int target = current - transfer.get();
+                if (target < 1) {
+                    transfer.set(current - 1); // Only transfer enough to reach 1
+                }
             }
         }
     }
 
     @Inject(
-        method = "mouseScrolled",
-        at = @At(
-            value = "FIELD",
-            target = "Lcom/simibubi/create/content/logistics/stockTicker/StockKeeperRequestScreen;blockEntity:Lcom/simibubi/create/content/logistics/stockTicker/StockTickerBlockEntity;",
-            shift = At.Shift.BY,
-            by = -5
-        )
+            method = "mouseScrolled",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lcom/simibubi/create/content/logistics/stockTicker/StockKeeperRequestScreen;blockEntity:Lcom/simibubi/create/content/logistics/stockTicker/StockTickerBlockEntity;",
+                    shift = At.Shift.BY,
+                    by = -5
+            )
     )
     private void mouseScrolled_addItems(double mouseX,
                                         double mouseY,
@@ -142,15 +152,13 @@ public abstract class StockKeeperRequestScreenMixin extends AbstractSimiContaine
                                         @Local(name = "transfer") LocalIntRef transfer,
                                         @Local(name = "entry") BigItemStack entry) {
 
-        if (ClientConfig.CONFIG.scrollSnapping.get()) { //Stack size 0 means its a factory logistics fluid
-            int stackSnapping = hasControlDown() ? 10 : (entry.stack.getMaxStackSize() / 4);
+        if (ClientConfig.CONFIG.enabled.get() && ClientConfig.CONFIG.scrollSnapping.get()) { //Stack size 0 means its a factory logistics fluid#
+            int stackSnapping = StackSnapping.getSnappingIncrementSafe(entry.stack.getMaxStackSize());
 
-            if (hasShiftDown() || hasControlDown()) {
-                if (stackSnapping == 0) return; //Snap size 0 means its a factory logistics fluid
-                int target = ((Math.floorDiv(current, stackSnapping) + 1) * stackSnapping);
-                target = Math.max(1, target);
-                transfer.set(target - current); // Set the amount to transfer
-            }
+            if (stackSnapping == 0) return; //Snap size 0 means its a factory logistics fluid
+            int target = ((Math.floorDiv(current, stackSnapping) + 1) * stackSnapping);
+            target = Math.max(1, target);
+            transfer.set(target - current); // Set the amount to transfer
         }
     }
 

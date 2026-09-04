@@ -3,4 +3,6 @@
   - Updated ru_ru translation, thank you to @VladisCrafter on github!
 1.21.1-1.0.4: |
   - Fixed compat with Create: Factory Logistics
+1.21.1-1.1.0: |
+  - Overhaul of configuration system, now allowing customisation of snapping values and individual changes (Thank you to @Timongcraft for contributing more specific flags)
 ...

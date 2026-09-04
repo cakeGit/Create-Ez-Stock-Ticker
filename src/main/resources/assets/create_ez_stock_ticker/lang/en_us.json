@@ -2,6 +2,7 @@
   "ez_stock_ticker.gui.title": "Ez Stock Ticker",
   "ez_stock_ticker.gui.description": "Adds quality of life improvements to the stock ticker UI.",
   "ez_stock_ticker.gui.click_to_configure": "Click to configure",
+  "ez_stock_ticker.config.enabled": "Enable Ez Stock Ticker",
   "ez_stock_ticker.config.auto_focus_search": "Auto-focus search bar",
   "ez_stock_ticker.config.auto_focus_search.tooltip": "Automatically focuses the search bar when opening a stock keeper",
   "ez_stock_ticker.config.scroll_snapping": "Shift scroll snapping",
@@ -9,5 +10,9 @@
   "ez_stock_ticker.config.right_click_divide": "Right click divides amount",
   "ez_stock_ticker.config.right_click_divide.tooltip": "Right clicking an item in the order bar divides the requested amount by 2",
   "ez_stock_ticker.config.prevent_stack_deletion": "Prevent scrolling below 1",
-  "ez_stock_ticker.config.prevent_stack_deletion.tooltip": "Prevents scrolling from removing an item from the order bar entirely"
+  "ez_stock_ticker.config.prevent_stack_deletion.tooltip": "Prevents scrolling from removing an item from the order bar entirely",
+  "ez_stock_ticker.config.default_snapping_expression": "Default snapping",
+  "ez_stock_ticker.config.ctrl_snapping_expression": "Ctrl snapping",
+  "ez_stock_ticker.config.shift_snapping_expression": "Shift snapping",
+  "ez_stock_ticker.config.ctrl_shift_snapping_expression": "Ctrl+Shift snapping"
 }
