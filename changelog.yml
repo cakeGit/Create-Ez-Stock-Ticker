@@ -5,4 +5,8 @@
   - Fixed compat with Create: Factory Logistics
 1.21.1-1.1.0: |
   - Overhaul of configuration system, now allowing customisation of snapping values and individual changes (Thank you to @Timongcraft for contributing more specific flags)
+1.21.1-1.1.1: |
+  - Added missing en_us translation for the new config options
+1.21.1-1.1.2: |
+  - Lang parity with 1.20.1 backport
 ...

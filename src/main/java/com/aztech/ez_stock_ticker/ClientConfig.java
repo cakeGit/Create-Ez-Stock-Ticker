@@ -45,7 +45,7 @@ public class ClientConfig {
 
         scrollSnapping = builder
                 .translation("ez_stock_ticker.config.scroll_snapping")
-                .comment("Whether scrolling the order bar will snap the item instead of just incrementing in larger units")
+                .comment("Whether items should be snapped to increments when scrolling, snapping in different increments when holding Shift or Ctrl")
                 .define("scroll_snapping_enabled", true);
 
         rightClickDivide = builder
