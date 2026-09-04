@@ -1,20 +1,20 @@
 # TODO
-[x] Connection integrity validation (check adjacent)
+- [x] Connection integrity validation (check adjacent)
 
-[x] Connection priority
+- [x] Connection priority
 
-[x] PONDERS
+- [x] PONDERS
 
-[X] Recipe
+- [X] Recipe
 
-[X] Shift-info
+- [X] Shift-info
 
-[1.5/2] Logo and assets
+- [1.5/2] Logo and assets
 
-[ ] Documentation and description
+- [ ] Documentation and description
 
-[X] CONFIG
+- [X] CONFIG
 
-[X] Fix when moving
+- [X] Fix when moving
 
-[X] particle
+- [X] particle

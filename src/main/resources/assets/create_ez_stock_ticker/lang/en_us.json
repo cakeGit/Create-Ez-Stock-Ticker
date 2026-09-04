@@ -1,10 +1,13 @@
 {
-  "ez_stock_ticker.gui.enabled": "Ez Stock Ticker enabled",
-  "ez_stock_ticker.gui.enabled_description_1": "The search bar will automatically select, and there are various changes to input.",
-  "ez_stock_ticker.gui.enabled_description_2": "Try out combinations of shift, control, left click, right click, and scroll wheel.",
-  "ez_stock_ticker.gui.disabled": "Ez Stock Ticker disabled",
-  "ez_stock_ticker.gui.disabled_description_1": "The stock ticker input handling is following base create,",
-  "ez_stock_ticker.gui.disabled_description_2": "but the search bar will still be automatically selected.",
-  "ez_stock_ticker.gui.click_to_toggle": "Click to toggle"
+  "ez_stock_ticker.gui.title": "Ez Stock Ticker",
+  "ez_stock_ticker.gui.description": "Adds quality of life improvements to the stock ticker UI.",
+  "ez_stock_ticker.gui.click_to_configure": "Click to configure",
+  "ez_stock_ticker.config.auto_focus_search": "Auto-focus search bar",
+  "ez_stock_ticker.config.auto_focus_search.tooltip": "Automatically focuses the search bar when opening a stock keeper",
+  "ez_stock_ticker.config.scroll_snapping": "Shift scroll snapping",
+  "ez_stock_ticker.config.scroll_snapping.tooltip": "Shift scrolls in 16-item increments",
+  "ez_stock_ticker.config.right_click_divide": "Right click divides amount",
+  "ez_stock_ticker.config.right_click_divide.tooltip": "Right clicking an item in the order bar divides the requested amount by 2",
+  "ez_stock_ticker.config.prevent_stack_deletion": "Prevent scrolling below 1",
+  "ez_stock_ticker.config.prevent_stack_deletion.tooltip": "Prevents scrolling from removing an item from the order bar entirely"
 }
-
